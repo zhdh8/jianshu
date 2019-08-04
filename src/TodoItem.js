@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class TodoItem extends Component {
 
@@ -7,18 +8,33 @@ class TodoItem extends Component {
     this.handleClick = this.handleClick.bind(this)
   }
 
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   if(nextProps.content !== this.props.content) {
+  //     return true
+  //   } else {
+  //     return false
+  //   }
+  // }
+
   render() {
     return (
-      <div onClick={this.handleClick}>{this.props.content}</div>
+      <div onClick={this.handleClick}>{this.props.test}--{this.props.content}</div>
+      // React.createElement('div', {'id': 'div1'}, 'item')
     )
   }
 
   handleClick() {
     this.props.deleteItem(this.props.index)
   }
-  handleLog() {
-    console.log('加一项')
-  }
+}
+
+TodoItem.propTypes = {
+  content: PropTypes.string,
+  test: PropTypes.number.isRequired
+}
+
+TodoItem.defaultProps = {
+  test: 1
 }
 
 export default TodoItem
