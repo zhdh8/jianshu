@@ -1,49 +1,42 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { connect } from 'react-redux';
+import { actionCreators } from './store';
 import { CSSTransition } from 'react-transition-group';
 import { HeaderWrapper, Wrapper, Contain, Logo, Nav, NavItem, SearchInput } from './style';
 
-class Header extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      isFocused: false
-    }
 
-    this.handleFocus = this.handleFocus.bind(this)
-    this.handleBlur = this.handleBlur.bind(this)
-  }
+const Header = (props) => (
+  <HeaderWrapper>
+    <Wrapper>
+      <Logo></Logo>
+      <Contain>
+        <Nav>
+          <NavItem className="active">首页</NavItem>
+          <NavItem>下载</NavItem>
+          <CSSTransition in={props.isFocused} timeout={200} classNames='slide'>
+            <NavItem className='searchWrap'>
+              <SearchInput className={props.isFocused?'focused': ''} onFocus={props.handleFocus} onBlur={props.handleBlur}></SearchInput>
+            </NavItem>
+          </CSSTransition>
+        </Nav>
+      </Contain>
+    </Wrapper>
+  </HeaderWrapper>
+)
 
-  render() {
-    return (
-      <HeaderWrapper>
-        <Wrapper>
-          <Logo></Logo>
-          <Contain>
-            <Nav>
-              <NavItem className="active">首页</NavItem>
-              <NavItem>下载</NavItem>
-              <CSSTransition in={this.state.isFocused} timeout={200} classNames='slide'>
-                <NavItem className='searchWrap'>
-                  <SearchInput className={this.state.isFocused?'focused': ''} onFocus={this.handleFocus} onBlur={this.handleBlur}></SearchInput>
-                </NavItem>
-              </CSSTransition>
-            </Nav>
-          </Contain>
-        </Wrapper>
-      </HeaderWrapper>
-    )
-  }
 
+const mapStateToProps = (state) => ({
+  ...state.header
+})
+
+const mapDispatchToProps = (dispatch) => ({
   handleFocus() {
-    this.setState({
-      isFocused: true
-    })
-  }
-  handleBlur() {
-    this.setState({
-      isFocused: false
-    })
-  }
-}
+    dispatch(actionCreators.handleSearchFocus(true))
+  },
 
-export default Header
+  handleBlur() {
+    dispatch(actionCreators.handleSearchBlur(false))
+  }
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header)
