@@ -26,7 +26,7 @@ const Header = (props) => (
 
 
 const mapStateToProps = (state) => ({
-  ...state.header
+  isFocused: state.get('header').get('isFocused')
 })
 
 const mapDispatchToProps = (dispatch) => ({
